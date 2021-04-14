@@ -1,11 +1,29 @@
     #include <ESP8266WiFi.h> 
-    int sensorPin = A0;
-     
-    void setup() {
-        Serial.begin(115200);
-        Serial.println();
+    #include "lib.h"
+    #include  "rgb_lcd.h"
+  
+    
 
-        WiFi.begin("Quang Phu", "12345678");
+    int sensorPin = A0;
+    UltraSonic uls(13);
+    TempSensor temp(A0);
+    const int colorR = 255;
+    const int colorG = 0;
+    const int colorB = 0;
+    rgb_lcd lcd;  
+    void setup() {
+      lcd.begin(16, 2);
+      Serial.begin(115200);
+      lcd.setRGB(colorR, colorG, colorB);
+
+    // Print a message to the LCD.
+      lcd.print("hello, world!");
+
+      delay(1000);
+       /* Serial.println();
+        
+        WiFi.mode(WIFI_STA);
+        WiFi.begin("Nokia 6", "88888888");
 
         Serial.print("Connecting");
         while (WiFi.status() != WL_CONNECTED)
@@ -16,21 +34,41 @@
         Serial.println();
 
         Serial.print("Connected, IP address: ");
-        Serial.println(WiFi.localIP()); 
+        Serial.println(WiFi.localIP()); */
         }
+
+    void breath(unsigned char color) {
+
+    for (int i = 0; i < 255; i++) {
+        lcd.setPWM(color, i);
+        //delay(1);
+    }
+
+    //delay(100);
+    for (int i = 254; i >= 0; i--) {
+        lcd.setPWM(color, i);
+        //delay(1);
+    }
+
+    //delay(100);
+}
      
     void loop() {
 
-     int reading = analogRead(sensorPin);  
      
+     
+     Serial.println(uls.GererInfo());
+    lcd.setCursor(0, 0);
+     
+    lcd.print("Distance:");
+    lcd.print(uls.GererInfo());
+    lcd.setCursor(0, 1);
+    lcd.print("Temperature:");
+    temp.ReadPin();
+    lcd.print(temp.GererInfo());
+    breath(REG_RED);
+    breath(REG_GREEN);
+    breath(REG_BLUE);
 
-     float voltage = reading * 3.3 / 1024.0; 
-     
-
-     
-     float temp = voltage/0.07;
-     
-     //Serial.println(temp);
- 
-     delay(1000);
+     lcd.clear();
     }
