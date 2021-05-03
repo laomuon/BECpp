@@ -5,13 +5,20 @@
     
 
     int sensorPin = A0;
+    int pinButton=14;
+    
     UltraSonic uls(13);
     TempSensor temp(A0);
-    Buzzer buzz(12,uls);
+    Buzzer buzz(12,uls,15.0);
+    Button button(pinButton);
+    
     const int colorR = 255;
     const int colorG = 0;
     const int colorB = 0;
     rgb_lcd lcd;  
+    int Colordef[3]={0,0,0};
+    int Color[3]={0,0,0};
+    int counter=0;
     void setup() {
       lcd.begin(16, 2);
       Serial.begin(115200);
@@ -57,8 +64,22 @@
     void loop() {
 
      
-     
-     Serial.println(uls.GererInfo());
+    lcd.clear();
+    button.GetEtat();
+    if (button.DetectFront() == 1)
+    { 
+      for (int i=0; i<3;i++) {Color[i]=0;}
+      Color[counter]=255;
+      lcd.setRGB(Color[0], Color[1], Color[2]);
+      counter++;
+      if (counter >= 3) {counter=0;}
+      if (buzz.GetStatus())
+      {
+        buzz.SetStatus(0);
+      }
+      else {buzz.SetStatus(1);}
+    }
+    Serial.println(uls.GererInfo());
     lcd.setCursor(0, 0);
      
     lcd.print("Distance:");
@@ -68,9 +89,9 @@
     temp.ReadPin();
     lcd.print(temp.GererInfo());
     //breath(REG_RED);
-   // breath(REG_GREEN);
-   // breath(REG_BLUE);
+    //breath(REG_GREEN);
+    //breath(REG_BLUE);
     buzz.Ring();
-    lcd.clear();
+
     delay(100);
     }

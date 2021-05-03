@@ -44,18 +44,51 @@ float TempSensor::GererInfo()
   return ( ValeurRead * 3.3 / 1024.0)/0.07; 
 
 }
+Buzzer::Buzzer(const int PinNum, const UltraSonic &ultra):Pin(PinNum),ulsn(ultra),distance_limit(10.0),statusBuzzer(1){pinMode(Pin, OUTPUT);}
+Buzzer::Buzzer(const int PinNum, const UltraSonic &ultra, const float distance):Pin(PinNum),ulsn(ultra),distance_limit(distance),statusBuzzer(1){pinMode(Pin, OUTPUT);}
 
-Buzzer::Buzzer(const int PinNum, const UltraSonic &ultra):Pin(PinNum),ulsn(ultra){pinMode(Pin, OUTPUT);}
+void Buzzer::SetStatus(int s){statusBuzzer=s;}
+
+int Buzzer::GetStatus(){return statusBuzzer;}
 
 void Buzzer::Ring()
 {
-  if (ulsn.GererInfo() <= 10.0)
-  {
-    
-    digitalWrite(Pin, HIGH);
+  if (statusBuzzer){
+    if (ulsn.GererInfo() <= distance_limit)
+    {
+      
+      digitalWrite(Pin, HIGH);
+    }
+    else
+    {
+      digitalWrite(Pin, LOW);
+    }
   }
-  else
-  {
-    digitalWrite(Pin, LOW);
+  else {digitalWrite(Pin, LOW);}
+}
+
+void Buzzer::SetDistanceLim(float distance){distance_limit=distance;}
+
+float Buzzer::GetDistanceLim(){return distance_limit;}
+
+Button::Button(const int PinNum):pin(PinNum),etatpre(LOW),etat(LOW){}
+
+int Button::GetEtat()
+{
+  etat=digitalRead(pin);
+}
+
+int Button::DetectFront()
+{
+  if (etat == HIGH && etatpre == LOW) 
+  { 
+    etatpre=etat;
+    return 1;
   }
+  else 
+  {
+    etatpre=etat;
+    return 0;
+  }
+  
 }
