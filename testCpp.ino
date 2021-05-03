@@ -7,6 +7,7 @@
     int sensorPin = A0;
     UltraSonic uls(13);
     TempSensor temp(A0);
+    Buzzer buzz(12,uls);
     const int colorR = 255;
     const int colorG = 0;
     const int colorB = 0;
@@ -66,9 +67,10 @@
     lcd.print("Temperature:");
     temp.ReadPin();
     lcd.print(temp.GererInfo());
-    breath(REG_RED);
-    breath(REG_GREEN);
-    breath(REG_BLUE);
-
-     lcd.clear();
+    //breath(REG_RED);
+   // breath(REG_GREEN);
+   // breath(REG_BLUE);
+    buzz.Ring();
+    lcd.clear();
+    delay(100);
     }

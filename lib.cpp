@@ -24,7 +24,7 @@ long UltraSonic::duration()
 float UltraSonic::GererInfo()
 {
      float RangeInCentimeters;
-    RangeInCentimeters = duration() / 29 / 2;
+    RangeInCentimeters = duration() / 29.0 / 2.0;
     return RangeInCentimeters;
 };
 
@@ -43,4 +43,19 @@ float TempSensor::GererInfo()
 { 
   return ( ValeurRead * 3.3 / 1024.0)/0.07; 
 
+}
+
+Buzzer::Buzzer(const int PinNum, const UltraSonic &ultra):Pin(PinNum),ulsn(ultra){pinMode(Pin, OUTPUT);}
+
+void Buzzer::Ring()
+{
+  if (ulsn.GererInfo() <= 10.0)
+  {
+    
+    digitalWrite(Pin, HIGH);
+  }
+  else
+  {
+    digitalWrite(Pin, LOW);
+  }
 }
