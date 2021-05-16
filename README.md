@@ -12,6 +12,6 @@ Pin à connecter sur Grove:
 - Température: A0
 - Buzzer: D6
 
-Sur l'écran vous verrez la température et la distance qui sont détectées par les détecteurs et il se rafraichit chaque 500ms pour affficher des nouvelles données
-Au début l'écran est en rouge et ça veut dire que le buzzer est activé. Donc si la distance est trop petite (on a défini 10cm par défaut et on peut le changer), le buzzer sera déclenché
+Sur l'écran vous verrez la température et la distance qui sont détectées par les détecteurs et il se rafraichit chaque 500ms pour affficher des nouvelles données.
+Au début l'écran est en rouge et ça veut dire que le buzzer est activé. Donc si la distance est trop petite (on a défini 10cm par défaut et on peut le changer), le buzzer sera déclenché.
 On peut désactiver le buzzer en pressant le bouton. L'écran deviendra vert et on pourra même toucher le détecteur de distance et le buzzer ne bippera pas
