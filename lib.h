@@ -44,7 +44,7 @@ class Buzzer
     float GetDistanceLim();
     void SetStatus(int s);
     int GetStatus();
-    void Ring();
+    void Ring(float distance_actuel);
   private:
     int statusBuzzer;
     int Pin;

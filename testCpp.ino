@@ -16,9 +16,7 @@
     const int colorG = 0;
     const int colorB = 0;
     rgb_lcd lcd;  
-    int Colordef[3]={0,0,0};
-    int Color[3]={0,0,0};
-    int counter=0;
+    float distance_actuel;
     void setup() {
       lcd.begin(16, 2);
       Serial.begin(115200);
@@ -43,6 +41,7 @@
 
         Serial.print("Connected, IP address: ");
         Serial.println(WiFi.localIP()); */
+        buzz.SetDistanceLim(10);
         }
 
     void breath(unsigned char color) {
@@ -65,25 +64,28 @@
 
      
     lcd.clear();
+    
     button.GetEtat();
     if (button.DetectFront() == 1)
     { 
-      for (int i=0; i<3;i++) {Color[i]=0;}
-      Color[counter]=255;
-      lcd.setRGB(Color[0], Color[1], Color[2]);
-      counter++;
-      if (counter >= 3) {counter=0;}
+      
       if (buzz.GetStatus())
       {
+        lcd.setRGB(0,255,0);
         buzz.SetStatus(0);
       }
-      else {buzz.SetStatus(1);}
+      else {
+        lcd.setRGB(255,0,0);
+        buzz.SetStatus(1);
+        }
     }
-    Serial.println(uls.GererInfo());
+    //Serial.println(uls.GererInfo());
+    distance_actuel=uls.GererInfo();
+    buzz.Ring(distance_actuel);
     lcd.setCursor(0, 0);
      
     lcd.print("Distance:");
-    lcd.print(uls.GererInfo());
+    lcd.print(distance_actuel);
     lcd.setCursor(0, 1);
     lcd.print("Temperature:");
     temp.ReadPin();
@@ -91,7 +93,7 @@
     //breath(REG_RED);
     //breath(REG_GREEN);
     //breath(REG_BLUE);
-    buzz.Ring();
+    
 
-    delay(100);
+    delay(500);
     }

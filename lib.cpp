@@ -51,10 +51,10 @@ void Buzzer::SetStatus(int s){statusBuzzer=s;}
 
 int Buzzer::GetStatus(){return statusBuzzer;}
 
-void Buzzer::Ring()
+void Buzzer::Ring(float distance_actuel)
 {
   if (statusBuzzer){
-    if (ulsn.GererInfo() <= distance_limit)
+    if (distance_actuel <= distance_limit)
     {
       
       digitalWrite(Pin, HIGH);
