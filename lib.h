@@ -8,6 +8,7 @@ using namespace std;
 class Sensor
 {
  public:
+  virtual float ReadPin();
   virtual float GererInfo(); //Retourner les données attendues depuis les détecteurs
 };
 
@@ -16,11 +17,10 @@ class UltraSonic : public Sensor
  public:
   UltraSonic(const int PinNum);
   float GererInfo();
-  friend class Buzzer;
  private:
   int ValeurRead;
   int Pin;
-  long duration();
+  float ReadPin();
 };
 
 class TempSensor : public Sensor

@@ -9,7 +9,7 @@ UltraSonic::UltraSonic(const int PinNum)
 
 //On va mesurer la duration du pulse recevoir par le détecteur après qu'il a envoyé un pulse au monde extérieur
 //Cette duration va nous servir à calculer la distance
-long UltraSonic::duration()
+float UltraSonic::ReadPin()
 {
     pinMode(Pin, OUTPUT);
     digitalWrite(Pin, LOW);
@@ -18,7 +18,7 @@ long UltraSonic::duration()
     delayMicroseconds(5);
     digitalWrite(Pin, LOW);
     pinMode(Pin, INPUT);
-    long duration;
+    float duration;
     duration = pulseIn(Pin, HIGH);
     return duration;
 };
@@ -27,7 +27,7 @@ long UltraSonic::duration()
 float UltraSonic::GererInfo()
 {
      float RangeInCentimeters;
-    RangeInCentimeters = duration() / 29.0 / 2.0;
+    RangeInCentimeters = ReadPin() / 29.0 / 2.0;
     return RangeInCentimeters;
 };
 

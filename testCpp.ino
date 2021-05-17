@@ -23,6 +23,7 @@
       //Set LCD to 16 colones and 2 lines
       lcd.begin(16, 2);
       Serial.begin(115200);
+      //Set LCD to red by default
       lcd.setRGB(255, 0, 0);
 
     // Print a message to the LCD.
@@ -51,20 +52,21 @@
         }
 
     //La méthode pour faire clignoter l'écran aux couleurs différents
+    //Faites attention, si on veut ultiliser cette méthode, on doit reconfigurer les délais pour le programme marche correctement
     void breath(unsigned char color) {
 
     for (int i = 0; i < 255; i++) {
         lcd.setPWM(color, i);
-        //delay(1);
+        delay(1);
     }
 
-    //delay(100);
+    delay(100);
     for (int i = 254; i >= 0; i--) {
         lcd.setPWM(color, i);
-        //delay(1);
+        delay(1);
     }
 
-    //delay(100);
+    delay(100);
 }
      
     void loop() {
@@ -103,6 +105,5 @@
     //breath(REG_GREEN);
     //breath(REG_BLUE);
     
-
     delay(500);
     }
