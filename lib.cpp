@@ -1,12 +1,14 @@
 #include "lib.h"
 
 #define LCD_ADDR (0x7c>>1)
-
+//le constructeur pour notre UltraSonic
 UltraSonic::UltraSonic(const int PinNum)
 {
   Pin=PinNum;
 };
 
+//On va mesurer la duration du pulse recevoir par le détecteur après qu'il a envoyé un pulse au monde extérieur
+//Cette duration va nous servir à calculer la distance
 long UltraSonic::duration()
 {
     pinMode(Pin, OUTPUT);
@@ -21,6 +23,7 @@ long UltraSonic::duration()
     return duration;
 };
 
+//La distance en centimètre
 float UltraSonic::GererInfo()
 {
      float RangeInCentimeters;
@@ -28,19 +31,23 @@ float UltraSonic::GererInfo()
     return RangeInCentimeters;
 };
 
+//Le constructeur de TempSensor
 TempSensor::TempSensor(const int PinNum)
 {
   Pin=PinNum;
 }
 
+//On lit la valeur reçoit depuis le détecteur
 float TempSensor::ReadPin()
 {
   ValeurRead=analogRead(Pin);
   return ValeurRead;
 }
 
+//Prend la valeur lit et retourne la température
 float TempSensor::GererInfo()
 { 
+  //TempSensor range = [0;70] pour 10 bits sous 3.3V
   return ( ValeurRead * 3.3 / 1024.0)/0.07; 
 
 }
@@ -53,7 +60,10 @@ int Buzzer::GetStatus(){return statusBuzzer;}
 
 void Buzzer::Ring(float distance_actuel)
 {
+  //On va seulement déclencher le buzzer s'il est activé
+  //Sinon il reste en silence en tous cas
   if (statusBuzzer){
+    //Si la distance détecté est inférieure à la distance limite
     if (distance_actuel <= distance_limit)
     {
       
@@ -78,6 +88,8 @@ int Button::GetEtat()
   etat=digitalRead(pin);
 }
 
+//Détecter un front montant à l'entrée du bouton
+//On va comparer l'état actuel et l'état avant
 int Button::DetectFront()
 {
   if (etat == HIGH && etatpre == LOW) 

@@ -3,24 +3,27 @@
     #include  "rgb_lcd.h"
   
     
-
+    //Les numéros des pins où on va brancher nos composants
+    //Si l'on souhaite de changer l'endroit où on les branche on peut redéfinir içi
+    //Faites l'attention, le lcd ne marche que avec des portes I2C
     int sensorPin = A0;
     int pinButton=14;
+    int ultrapin=13;
+    int buzzpin=12;
     
-    UltraSonic uls(13);
+    UltraSonic uls(ultrapin);
     TempSensor temp(A0);
-    Buzzer buzz(12,uls,15.0);
+    Buzzer buzz(buzzpin,uls,15.0);
     Button button(pinButton);
     
-    const int colorR = 255;
-    const int colorG = 0;
-    const int colorB = 0;
+    
     rgb_lcd lcd;  
     float distance_actuel;
     void setup() {
+      //Set LCD to 16 colones and 2 lines
       lcd.begin(16, 2);
       Serial.begin(115200);
-      lcd.setRGB(colorR, colorG, colorB);
+      lcd.setRGB(255, 0, 0);
 
     // Print a message to the LCD.
       lcd.print("hello, world!");
@@ -41,9 +44,13 @@
 
         Serial.print("Connected, IP address: ");
         Serial.println(WiFi.localIP()); */
+        
+        
+        //Définir la distance limite pour déclencher le buzzer comme 10cm
         buzz.SetDistanceLim(10);
         }
 
+    //La méthode pour faire clignoter l'écran aux couleurs différents
     void breath(unsigned char color) {
 
     for (int i = 0; i < 255; i++) {
@@ -71,10 +78,12 @@
       
       if (buzz.GetStatus())
       {
+        //Change à vert quand on déactive le buzzer
         lcd.setRGB(0,255,0);
         buzz.SetStatus(0);
       }
       else {
+        //Change à rouge quand on réactive le buzzer
         lcd.setRGB(255,0,0);
         buzz.SetStatus(1);
         }
