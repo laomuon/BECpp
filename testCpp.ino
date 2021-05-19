@@ -105,5 +105,5 @@
     //breath(REG_GREEN);
     //breath(REG_BLUE);
     
-    delay(500);
+    delay(200);
     }
